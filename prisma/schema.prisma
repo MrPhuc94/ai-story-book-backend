@@ -1,0 +1,19 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Token {
+  id           Int      @id @default(autoincrement())
+  userEmail    String
+  accessToken  String?  // Optional since access tokens are usually short-lived
+  refreshToken String   @unique
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  revoked      Boolean  @default(false)
+}
