@@ -1,4 +1,3 @@
-const pool = require('../db');
 
 const authenticateJWT = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -21,3 +20,5 @@ const authenticateJWT = async (req, res, next) => {
     res.status(403).send({ message: 'Invalid token' });
   }
 };
+
+module.exports = { authenticateJWT };

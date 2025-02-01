@@ -6,13 +6,17 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "bcryptjs": "^2.4.3",
+    "chromedriver": "^132.0.2",
     "dotenv": "^16.4.7",
+    "edgedriver": "^6.1.1",
     "express": "^4.21.2",
+    "geckodriver": "^5.0.0",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "selenium-webdriver": "^4.28.1"
   },
   "devDependencies": {
     "prisma": "^6.2.1"
