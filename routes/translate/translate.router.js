@@ -10,20 +10,20 @@ async function getDriver(browser) {
 
 // Supported language codes in Cambridge Dictionary
 const LANGUAGE_MAP = {
-  vi: "english-vietnamese",
-  zh: "english-chinese-simplified",
-  fr: "english-french",
-  es: "english-spanish",
-  de: "english-german",
-  ru: "english-russian",
-  ko: "english-korean",
-  ja: "english-japanese",
+  vi: 'english-vietnamese',
+  zh: 'english-chinese-simplified',
+  fr: 'english-french',
+  es: 'english-spanish',
+  de: 'english-german',
+  ru: 'english-russian',
+  ko: 'english-korean',
+  ja: 'english-japanese',
 };
 
 // Web Scraping Function
-async function translateWord(word, targetLang = "vi",browser = 'chrome') {
+async function translateWord(word, targetLang = 'vi', browser = 'chrome') {
   let driver = await getDriver(browser);
-let result = { word, targetLang, browser, definitions: [], translations: [] };
+  let result = { word, targetLang, browser, definitions: [], translations: [] };
 
   try {
     // Get correct Cambridge Dictionary URL
@@ -56,17 +56,19 @@ let result = { word, targetLang, browser, definitions: [], translations: [] };
   return result;
 }
 
-router.get('/byword', async (req, res) => {
-  // authenticateJWT();
+const searchByWord = async (req, res) => {
   const word = req.query.word;
   const browser = req.query.browser || 'chrome';
 
   if (!word) {
     return res.status(400).json({ error: "Missing 'word' parameter" });
   }
-
   const data = await translateWord(word, browser);
   res.json(data);
+};
+
+router.get('/byword', async (req, res) => {
+  await authenticateJWT(req, res, searchByWord(req, res));
 });
 
 module.exports = router;

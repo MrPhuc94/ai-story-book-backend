@@ -1,21 +1,26 @@
+const jwt = require('jsonwebtoken');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const authenticateJWT = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
+  console.log('token', token);
   if (!token) return res.status(401).send({ message: 'Access denied' });
 
   try {
-    const user = jwt.verify(token, SECRET_KEY);
-    req.user = user;
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('user====', user);
+
+    let email = user.email;
 
     // Optional: Check if the token was revoked
-    const result = await pool.query(
-      `SELECT * FROM tokens WHERE access_token = $1 AND revoked = false`,
-      [token]
-    );
-    if (result.rows.length === 0)
+    const result = await prisma.user.findUnique({ where: { email } });
+    console.log('result====', result);
+
+    if (result.email === 0)
       return res.status(403).send({ message: 'Invalid or revoked token' });
 
-    next();
   } catch (err) {
     res.status(403).send({ message: 'Invalid token' });
   }
