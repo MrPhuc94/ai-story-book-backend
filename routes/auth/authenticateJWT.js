@@ -10,13 +10,13 @@ const authenticateJWT = async (req, res, next) => {
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('user====', user);
 
     let email = user.email;
 
     // Optional: Check if the token was revoked
     const result = await prisma.user.findUnique({ where: { email } });
     console.log('result====', result);
+    next && next();
 
     if (result.email === 0)
       return res.status(403).send({ message: 'Invalid or revoked token' });
